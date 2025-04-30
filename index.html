@@ -739,6 +739,57 @@
     javob: "Tasvirni mos platalarga (kanallarga) bo‘lish."
   }
 ];
+const popup = document.createElement("div");
+  popup.style.position = "absolute";
+  popup.style.backgroundColor = "#ffffffff";
+  popup.style.color = "inherit";
+  popup.style.padding = "5px 10px";
+  popup.style.borderRadius = "5px";
+  popup.style.fontSize = "14px";
+  popup.style.zIndex = "1000";
+  popup.style.display = "none";
+  document.body.appendChild(popup);
+  let isRunning = false;
+  document.addEventListener("keydown", function (e) {
+    if (e.key === "a" || e.key === "A") {
+      isRunning = true;
+    }
+    if (e.key === "s" || e.key === "S") {
+      isRunning = false;
+      popup.style.display = "none"; 
+    }
+  });
+  
+  document.addEventListener("mouseup", function (e) {
+    if (!isRunning) return; 
+  
+    setTimeout(() => {
+      const selectedText = window.getSelection().toString().trim();
+      if (selectedText.length > 0) {
+        const found = quest1.find((item) =>
+          item.savol.toLowerCase().includes(selectedText.toLowerCase())
+        );
+        if (found) {
+          popup.textContent = found.javob;
+          popup.style.left = e.pageX + "px";
+          popup.style.top = e.pageY - 30 + "px";
+          popup.style.display = "block";
+        } else {
+          popup.style.display = "none";
+        }
+      } else {
+        popup.style.display = "none";
+      }
+      
+    }, 10);
+  });
+  document.addEventListener("selectionchange", function () {
+    if (!isRunning) return; 
+    const selectedText = window.getSelection().toString().trim();
+    if (selectedText.length === 0) {
+      popup.style.display = "none";
+    }
+  });
 
     </textarea>
 </body>
